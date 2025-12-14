@@ -1,19 +1,19 @@
-# 🏦 Sistema de Cola de Turnos - React + Pasarela Gateway
+# 🏦 Sistema de Cola de Turnos - React + Relay Gateway
 
-Sistema de gestión de turnos tipo banco construido con **React** y [Pasarela Gateway](https://github.com/Coderic/Pasarela).
+Sistema de gestión de turnos tipo banco construido con **React** y [Relay Gateway](https://github.com/Coderic/Relay).
 
 ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)
 ![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite)
-![Pasarela](https://img.shields.io/badge/Pasarela-Gateway-blueviolet)
+![Relay](https://img.shields.io/badge/Relay-Gateway-blueviolet)
 
 ## 🚀 Inicio Rápido
 
 ### Prerrequisitos
 
-Pasarela Gateway ejecutándose en `http://localhost:5000`:
+Relay Gateway ejecutándose en `http://localhost:5000`:
 
 ```bash
-npx pasarela-gateway
+npx relay-gateway
 ```
 
 ### Usar este template
@@ -48,10 +48,10 @@ npm run dev
 ## 💻 Uso del Hook
 
 ```jsx
-import { usePasarela } from './hooks/usePasarela';
+import { useRelay } from './hooks/useRelay';
 
 function MiComponente() {
-  const { connected, enviarATodos, onMensaje } = usePasarela('mi-usuario-id');
+  const { connected, enviarATodos, onMensaje } = useRelay('mi-usuario-id');
 
   useEffect(() => {
     const unsubscribe = onMensaje((data) => {
@@ -69,7 +69,7 @@ function MiComponente() {
 ```
 src/
 ├── hooks/
-│   └── usePasarela.js    # Hook React para Pasarela
+│   └── useRelay.js    # Hook React para Relay
 ├── App.jsx               # Componente principal
 ├── App.css               # Estilos
 └── main.jsx              # Entry point
@@ -77,9 +77,9 @@ src/
 
 ## 🔗 Enlaces
 
-- [Pasarela Gateway](https://github.com/Coderic/Pasarela)
-- [Documentación](https://coderic.github.io/Pasarela/)
-- [Otros ejemplos](https://github.com/Coderic?q=pasarela-ejemplo)
+- [Relay Gateway](https://github.com/Coderic/Relay)
+- [Documentación](https://coderic.github.io/Relay/)
+- [Otros ejemplos](https://github.com/Coderic?q=relay-ejemplo)
 
 ## 📄 Licencia
 

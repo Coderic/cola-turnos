@@ -1,44 +1,49 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { io } from 'socket.io-client';
 
-const PASARELA_URL = import.meta.env.VITE_PASARELA_URL || 'http://localhost:5000';
+// Detectar si estamos en producción (coderic.org)
+const isProduction = typeof window !== 'undefined' && 
+  (window.location.hostname === 'coderic.org' || window.location.hostname === 'www.coderic.org');
 
-export function usePasarela(userId) {
+const RELAY_URL = import.meta.env.VITE_RELAY_URL || 
+  (isProduction ? 'wss://demo.relay.coderic.net' : 'http://localhost:5000');
+
+export function useRelay(userId) {
   const [connected, setConnected] = useState(false);
   const [identified, setIdentified] = useState(false);
   const socketRef = useRef(null);
   const listenersRef = useRef(new Map());
 
   useEffect(() => {
-    const socket = io(`${PASARELA_URL}/pasarela`, {
+    const socket = io(`${RELAY_URL}/relay`, {
       transports: ['websocket', 'polling']
     });
 
     socketRef.current = socket;
 
     socket.on('connect', () => {
-      console.log('[Pasarela] Conectado:', socket.id);
+      console.log('[Relay] Conectado:', socket.id);
       setConnected(true);
       
       if (userId) {
         socket.emit('identificar', userId, (ok) => {
-          console.log('[Pasarela] Identificado:', userId);
+          console.log('[Relay] Identificado:', userId);
           setIdentified(ok);
         });
       }
     });
 
     socket.on('disconnect', (reason) => {
-      console.log('[Pasarela] Desconectado:', reason);
+      console.log('[Relay] Desconectado:', reason);
       setConnected(false);
       setIdentified(false);
     });
 
     socket.on('connect_error', (error) => {
-      console.error('[Pasarela] Error:', error.message);
+      console.error('[Relay] Error:', error.message);
     });
 
-    socket.on('pasarela', (data) => {
+    socket.on('relay', (data) => {
       listenersRef.current.forEach((callback) => callback(data));
     });
 
@@ -55,7 +60,7 @@ export function usePasarela(userId) {
 
   const enviar = useCallback((data, destino = 'nosotros') => {
     if (socketRef.current) {
-      socketRef.current.emit('pasarela', { ...data, destino });
+      socketRef.current.emit('relay', { ...data, destino });
     }
   }, []);
 
@@ -81,5 +86,5 @@ export function usePasarela(userId) {
   };
 }
 
-export default usePasarela;
+export default useRelay;
 
